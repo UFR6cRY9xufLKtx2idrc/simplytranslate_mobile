@@ -32,12 +32,27 @@ jobs:
       - run: flutter config --no-analytics
       - run: flutter pub get
       - run: flutter build apk --flavor development --debug
-      
-      - name: Save result
+
+      - name: Create 7z Release
+        uses: DuckSoft/create-7z-action@v1.0
+        with:
+          pathSource: ./build/app/outputs/flutter-apk/
+          pathTarget: ./release.7z
+
+      - name: Upload APK
         uses: actions/upload-artifact@v3
         with:
-          name: compiled-flutter-code
-          path: build/app/outputs/flutter-apk/app-development-debug.apk
+          name: my-build-apk.7z
+          path: release.7z
+
+      - name: Upload binaries to release
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: release.7z
+          asset_name: my-build-apk.7z
+          tag: ${{ github.ref }}
+          overwrite: true
 
 
 # You may pin to the exact commit or the version.
