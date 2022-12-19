@@ -36,7 +36,7 @@ jobs:
       - name: Create 7z Release
         uses: DuckSoft/create-7z-action@v1.0
         with:
-          pathSource: ./build/app/outputs/flutter-apk/
+          pathSource: ./build/app/outputs/flutter-apk/app-development-debug.apk
           pathTarget: ./release.7z
 
       - name: Upload APK
